@@ -1,4 +1,7 @@
 // Nombre
+alert(`Hola! Bienvenido al configurador de vehiculos de Toyota.
+
+Vamos a comenzar...`)
 let nombre = prompt('Ingrese su nombre:');
 while (!isNaN(nombre)) {
     alert("Error! Ingrese un nombre valido.");
@@ -15,7 +18,7 @@ function obtener_edad(edad){
     var patron = /^[1-9]+$/;
     while(true){
         if(edad === null || edad < 18 || patron.test(edad) === false){
-            edad = prompt('Error! Ingrese una edad valida: ')
+            edad = prompt('Error! Ingrese una edad valida, es requisito ser mayor de edad. ')
         }
         else{
             return edad
@@ -43,7 +46,7 @@ function elegir_auto(suma){
         if(auto in autos){
             let resultado = {
                 selecc: auto,
-                suma: autos[auto]
+                precio: autos[auto],
             }
             return resultado
         }else{
@@ -57,10 +60,11 @@ function elegir_auto(suma){
     };
 
 eleccion = elegir_auto(suma)
-suma = eleccion.suma
+precio_auto = eleccion.precio
 auto = eleccion.selecc
+suma += precio_auto
 alert(`Por el momento lleva seleccionado los siguientes items:
-- Toyota ${auto} ($${suma})
+- Toyota ${auto} ($${precio_auto})
 
 Total: $${suma}`)
 
@@ -98,12 +102,12 @@ function elegir_color(suma){
 
 eleccion_color = elegir_color(suma)
 color = eleccion_color.color
-precio = eleccion_color.precio
+precio_color = eleccion_color.precio
 suma = eleccion_color.suma
 
 alert(`Por el momento lleva seleccionado los siguientes items:
-- Toyota ${auto} ($${suma})
-- Color ${color} ($${precio})
+- Toyota ${auto} ($${precio_auto})
+- Color ${color} ($${precio_color})
 
 Total: $${suma}`)
 
@@ -113,19 +117,23 @@ function cotizador(suma){
     const opciones = {
         '1': resultado = {
             total: suma,
-            cuotas: 1
+            cuotas: 1,
+            cant: '1'
         },
         '12': resultado = {
             total: suma * 1.25,
-            cuotas: ((suma * 1.25)/12).toFixed(2)
+            cuotas: ((suma * 1.25)/12).toFixed(2),
+            cant: '12'
         },
         '24': resultado = {
             total: suma * 1.5,
-            cuotas: ((suma * 1.5)/24).toFixed(2)
+            cuotas: ((suma * 1.5)/24).toFixed(2),
+            cant: '24'
         },
         '48': resultado = {
             total: suma * 2,
-            cuotas: ((suma * 2)/48).toFixed(2)
+            cuotas: ((suma * 2)/48).toFixed(2),
+            cant: '48'
         }
     };
     let eleccion = prompt(`En cuantas cuotas va a abonar su vehiculo?:
@@ -133,35 +141,38 @@ function cotizador(suma){
     - En 12 cuotas (Interes del 25%) Final $${(suma * 1.25)}
     - En 24 cuotas (Interes del 50%) Final $${suma * 1.5}
     - En 48 cuotas (Interes del 100%) Final $${suma * 2}`);
+    // let eleccion = '4';
     while(true){
         if(eleccion in opciones){
-            let resultado = opciones[eleccion]
-            let valor_total = resultado.total
-            let valor_cuotas =  resultado.cuotas
-            alert(`Abonara su vehiculo en ${eleccion} cuotas de $${valor_cuotas}, saldo final: $${valor_total}`);
-            break;
-        }
-        else{
-            alert("Error! Elija entre una de las opciones disponibles: ")
-            let eleccion = prompt(`En cuantas cuotas va a abonar su vehiculo?:
-            - En 1 cuota. Final $${suma}
-            - En 12 cuotas (Interes del 25%) Final $${(suma * 1.25)}
-            - En 24 cuotas (Interes del 50%) Final $${suma * 1.5}
-            - En 48 cuotas (Interes del 100%) Final $${suma * 2}`)
-            // console.log('ERROR')
+            return opciones[eleccion]
+    }else{
+        alert("Error! Elija entre una de las opciones disponibles: ")
+        // console.log("Error! Elija entre una de las opciones disponibles: ")
+        eleccion = prompt(`En cuantas cuotas va a abonar su vehiculo?:
+        - En 1 cuota. Final $${suma}
+        - En 12 cuotas (Interes del 25%) Final $${(suma * 1.25)}
+        - En 24 cuotas (Interes del 50%) Final $${suma * 1.5}
+        - En 48 cuotas (Interes del 100%) Final $${suma * 2}`)
+        // console.log('ERROR')
         }
     }
 }
-cotizador(suma)
+let salida = cotizador(suma);
+suma = salida.total
+let valor_cuotas = salida.cuotas
+let cant_cuotas = salida.cant
 
 
+alert(`Abonara su vehiculo en ${cant_cuotas} cuotas de $${valor_cuotas}, saldo final: $${suma}`);
 
 
 alert(`Detalles finales de su compra:
 - Cliente: ${nombre} ${apellido}
 - Edad: ${edad}
-- Toyota ${auto} ($${suma})
-- Color ${color} ($${precio})
+- Toyota: ${auto} ($${precio_auto})
+- Color: ${color} ($${precio_color})
+- ${cant_cuotas} cuotas de $${valor_cuotas}
+- Interes: $${suma - (precio_auto+precio_color)}
 
 PRECIO FINAL: $${suma}`)
 
